@@ -1,5 +1,11 @@
+import MainForm from './components/MainForm/MainForm';
+
 function App() {
-  return <></>;
+  return (
+    <>
+      <MainForm />
+    </>
+  );
 }
 
 export default App;
