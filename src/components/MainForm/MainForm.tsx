@@ -47,7 +47,7 @@ const MainForm = () => {
             <TabPanel value="2">Item Two</TabPanel>
           </TabContext>
         </StyledTabsWrapper>
-        <StyledSaveButton type="submit" variant="contained">
+        <StyledSaveButton type="submit" variant="contained" disabled={readOnlyForm}>
           Сохранить
         </StyledSaveButton>
 

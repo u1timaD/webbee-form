@@ -8,7 +8,7 @@ export const schema = z.object({
   phone: z
     .string()
     .min(1, { message: 'Это поле обязательное' })
-    .refine((text) => patterns.phone.test(text), { message: 'Введите корректные данные' }),
+    .refine((text) => patterns.phone.test(text), { message: 'Это не похоже на номер телефона' }),
   email: z
     .string()
     .optional()
