@@ -1,10 +1,16 @@
-import { Checkbox, FormControl, FormControlLabel, FormHelperText, TextField, Typography } from '@mui/material';
-import { StyledInputWrapper, StyledUserInfoBlock, StyledUserInfoTitle, StyledUserInfoWrapper } from './UserInfoTab.styled';
+import { Checkbox, FormControl, FormControlLabel, FormHelperText } from '@mui/material';
+import {
+  StyledInputWrapper,
+  StyledUserInfoBlock,
+  StyledUserInfoTitle,
+  StyledUserInfoWrapper,
+} from './UserInfoTab.styled';
 import { useFormContext } from 'react-hook-form';
 import { Schema } from '../../types/Schema';
 import TextInput from '../../ui/TextInput/TextInput';
+import SpecializedInput from '../../ui/SpecializedInput/SpecializedInput';
 
-const UserInfoTab = ({ readOnlyForm }) => {
+const UserInfoTab = ({ readOnlyForm }: { readOnlyForm: boolean }) => {
   const {
     register,
     formState: { errors },
@@ -42,18 +48,18 @@ const UserInfoTab = ({ readOnlyForm }) => {
       <StyledUserInfoBlock>
         <StyledUserInfoTitle variant="h6">Контактная информация</StyledUserInfoTitle>
         <StyledInputWrapper>
-          <TextField
+          <SpecializedInput
             label="Телефон"
-            {...register('phone')}
+            name="phone"
             error={!!errors.phone}
             helperText={errors.phone?.message}
             disabled={readOnlyForm}
             type="number"
           />
 
-          <TextField
+          <SpecializedInput
             label="Email"
-            {...register('email')}
+            name="email"
             error={!!errors.email}
             helperText={errors.email?.message}
             disabled={readOnlyForm}

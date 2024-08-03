@@ -6,6 +6,7 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { useState } from 'react';
 import { StyledEditButton, StyledSaveButton, StyledTabListWrapper, StyledTabsWrapper } from './MainForm.styled';
 import UserInfoTab from '../UserInfoTab/UserInfoTab';
+import UserProjectsTab from '../UserProjectsTab/UserProjectsTab';
 
 const MainForm = () => {
   const methods = useForm({
@@ -14,7 +15,7 @@ const MainForm = () => {
     defaultValues,
   });
 
-  const [value, setValue] = useState('1');
+  const [value, setValue] = useState('2');
   const [readOnlyForm, setReadOnlyForm] = useState(false);
 
   const handleChangeTabs = (_event: React.SyntheticEvent, newValue: string) => {
@@ -25,9 +26,8 @@ const MainForm = () => {
     setReadOnlyForm(false);
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = () => {
     setReadOnlyForm(true);
-
   };
 
   return (
@@ -44,7 +44,9 @@ const MainForm = () => {
             <TabPanel value="1">
               <UserInfoTab readOnlyForm={readOnlyForm} />
             </TabPanel>
-            <TabPanel value="2">Item Two</TabPanel>
+            <TabPanel value="2">
+              <UserProjectsTab readOnlyForm={readOnlyForm} />
+            </TabPanel>
           </TabContext>
         </StyledTabsWrapper>
         <StyledSaveButton type="submit" variant="contained" disabled={readOnlyForm}>
