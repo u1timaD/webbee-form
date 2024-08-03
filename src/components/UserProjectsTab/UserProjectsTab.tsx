@@ -13,10 +13,11 @@ import {
 } from './UserProjectsTab.styled';
 import AutocompleteInput from '../../ui/AutocomplateInput/AutocomplateInput';
 import { dataSkills } from '../../utils/data';
-import { useState } from 'react';
-import ProjectBlock from '../ProjectBlock/ProjectBlock';
+import { useFormStore, useProjectStore } from '../../store/store';
 
-const UserProjectsTab = ({ readOnlyForm }) => {
+const UserProjectsTab = () => {
+  const { readOnlyForm } = useFormStore();
+
   const {
     control,
     trigger,
@@ -28,15 +29,16 @@ const UserProjectsTab = ({ readOnlyForm }) => {
     control,
   });
 
-  const [readOnlyProject, setReadOnlyProject] = useState(null);
 
-  const handleClickTriggerForm = async (index) => {
+  const { projectFormList, addValidProjectForm, removeValidProjectForm } = useProjectStore();
+
+  const handleClickTriggerForm = async (index: number) => {
     const result = await trigger(`projects.${index}`);
 
     if (result) {
-      setReadOnlyProject(index);
+      addValidProjectForm(index);
     } else {
-      setReadOnlyProject(null);
+      removeValidProjectForm(index);
     }
   };
 
@@ -45,6 +47,10 @@ const UserProjectsTab = ({ readOnlyForm }) => {
       projectName: '',
       skills: [],
     });
+  };
+
+  const handleFindIndex = (index: number):boolean => {
+    return projectFormList.includes(index);
   };
 
   return (
@@ -59,18 +65,18 @@ const UserProjectsTab = ({ readOnlyForm }) => {
                 label="Название"
                 error={!!errors.projects?.[index]?.projectName}
                 helperText={errors.projects?.[index]?.projectName?.message}
-                disabled={readOnlyForm || readOnlyProject === index}
+                disabled={handleFindIndex(index) || readOnlyForm}
               />
               <AutocompleteInput<Schema>
                 name={`projects.${index}.skills`}
                 options={dataSkills}
-                disabled={readOnlyForm || readOnlyProject === index}
+                disabled={handleFindIndex(index) || readOnlyForm}
               />
             </StyledInputWrapper>
 
-            {readOnlyProject === index ? (
+            {handleFindIndex(index) ? (
               <Box>
-                <Button variant="contained" color="primary" onClick={() => setReadOnlyProject(null)}>
+                <Button variant="contained" color="primary" onClick={() => removeValidProjectForm(index)}>
                   Редактировать
                 </Button>
               </Box>

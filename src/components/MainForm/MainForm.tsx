@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { StyledEditButton, StyledSaveButton, StyledTabListWrapper, StyledTabsWrapper } from './MainForm.styled';
 import UserInfoTab from '../UserInfoTab/UserInfoTab';
 import UserProjectsTab from '../UserProjectsTab/UserProjectsTab';
+import { useFormStore } from '../../store/store';
 
 const MainForm = () => {
   const methods = useForm({
@@ -17,18 +18,22 @@ const MainForm = () => {
   });
 
   const [value, setValue] = useState('2');
-  const [readOnlyForm, setReadOnlyForm] = useState(false);
+  // const [readOnlyForm, setReadOnlyForm] = useState(false);
+
+  const { readOnlyForm, activateReadOnlyForm, deactivateReadOnlyForm } = useFormStore();
+
+
 
   const handleChangeTabs = (_event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 
-  const handleChangeReadOnly = () => {
-    setReadOnlyForm(false);
-  };
+  // const handleChangeReadOnly = () => {
+  //   (false);
+  // };
 
   const onSubmit = () => {
-    setReadOnlyForm(true);
+    activateReadOnlyForm();
   };
 
   return (
@@ -43,10 +48,10 @@ const MainForm = () => {
               </TabList>
             </StyledTabListWrapper>
             <TabPanel value="1">
-              <UserInfoTab readOnlyForm={readOnlyForm} />
+              <UserInfoTab />
             </TabPanel>
             <TabPanel value="2">
-              <UserProjectsTab readOnlyForm={readOnlyForm} />
+              <UserProjectsTab />
             </TabPanel>
           </TabContext>
         </StyledTabsWrapper>
@@ -54,7 +59,7 @@ const MainForm = () => {
           Сохранить
         </StyledSaveButton>
 
-        {readOnlyForm && <StyledEditButton onClick={handleChangeReadOnly}>Редактировать</StyledEditButton>}
+        {readOnlyForm && <StyledEditButton onClick={deactivateReadOnlyForm}>Редактировать</StyledEditButton>}
       </form>
       {/* <DevTool control={methods.control} /> */}
     </FormProvider>

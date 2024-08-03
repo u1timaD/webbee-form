@@ -9,12 +9,15 @@ import { useFormContext } from 'react-hook-form';
 import { Schema } from '../../types/Schema';
 import TextInput from '../../ui/TextInput/TextInput';
 import SpecializedInput from '../../ui/SpecializedInput/SpecializedInput';
+import { useFormStore } from '../../store/store';
 
-const UserInfoTab = ({ readOnlyForm }: { readOnlyForm: boolean }) => {
+const UserInfoTab = () => {
   const {
     register,
     formState: { errors },
   } = useFormContext<Schema>();
+
+  const { readOnlyForm } = useFormStore();
 
   return (
     <StyledUserInfoWrapper>
