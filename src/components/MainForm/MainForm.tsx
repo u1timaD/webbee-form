@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { DevTool } from '@hookform/devtools';
 import { FormProvider, useForm } from 'react-hook-form';
 import { schema, defaultValues } from '../../types/Schema';
 import { Tab } from '@mui/material';
@@ -28,6 +29,7 @@ const MainForm = () => {
 
   const onSubmit = () => {
     setReadOnlyForm(true);
+
   };
 
   return (
@@ -59,6 +61,7 @@ const MainForm = () => {
           </StyledEditButton>
         )}
       </form>
+      <DevTool control={methods.control} />
     </FormProvider>
   );
 };

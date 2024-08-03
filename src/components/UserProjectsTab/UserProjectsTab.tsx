@@ -1,4 +1,4 @@
-import { useFormContext } from 'react-hook-form';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Box, Button, Typography } from '@mui/material';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
@@ -14,41 +14,55 @@ import {
 
 const UserProjectsTab = ({ readOnlyForm }) => {
   const {
+    control,
     formState: { errors },
   } = useFormContext<Schema>();
+
+  const { fields, append, remove } = useFieldArray({
+    name: 'projects',
+    control,
+  });
+
+  const handleClickAddProjectForm = () => {
+    append({
+      projectName: '',
+    });
+  };
 
   return (
     <StyledUserProjectContainer>
       <StyledFormWrapper>
-        <StyledProjectBlock>
-          <Typography variant="h6">Проект №{1}</Typography>
-          <StyledInputWrapper>
-            <TextInput
-              name="projectName"
-              label="Название"
-              error={!!errors.projectName}
-              helperText={errors.projectName?.message}
-              disabled={readOnlyForm}
-            />
-          </StyledInputWrapper>
-          <Box>
-            {!readOnlyForm && (
-              <Button variant="contained" color="secondary">
-                Удалить
+        {fields.map((field, index) => (
+          <StyledProjectBlock key={field.id}>
+            <Typography variant="h6">Проект №{index + 1}</Typography>
+            <StyledInputWrapper>
+              <TextInput
+                name={`projects.${index}.projectName`}
+                label="Название"
+                error={!!errors.projects?.[index]?.projectName}
+                helperText={errors.projects?.[index]?.projectName?.message}
+                disabled={readOnlyForm}
+              />
+            </StyledInputWrapper>
+
+            <Box>
+              {!readOnlyForm && (
+                <Button variant="contained" color="secondary" onClick={() => remove(index)}>
+                  Удалить
+                </Button>
+              )}
+              <Button variant="contained" color="primary">
+                Добавить
               </Button>
-            )}
-            <Button variant="contained" color="primary">
-              Добавить
-            </Button>
-          </Box>
-        </StyledProjectBlock>
+            </Box>
+          </StyledProjectBlock>
+        ))}
       </StyledFormWrapper>
+
       <Box>
-        {!readOnlyForm && (
-          <StyledButtonAddProject variant="contained" color="primary">
-            <AddOutlinedIcon />
-          </StyledButtonAddProject>
-        )}
+        <StyledButtonAddProject variant="contained" color="primary" onClick={handleClickAddProjectForm}>
+          <AddOutlinedIcon />
+        </StyledButtonAddProject>
       </Box>
     </StyledUserProjectContainer>
   );
