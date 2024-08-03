@@ -22,7 +22,7 @@ const MainForm = () => {
 
   const onSubmit = (data) => {
 
-    console.log(data);
+
   };
 
   return (

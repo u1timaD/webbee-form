@@ -2,6 +2,7 @@ import { Checkbox, FormControl, FormControlLabel, FormHelperText, TextField, Typ
 import { StyledInputWrapper, StyledUserInfoWrapper } from './UserInfoTab.styled';
 import { useFormContext } from 'react-hook-form';
 import { Schema } from '../../types/Schema';
+import TextInput from '../../ui/TextInput/TextInput';
 
 const UserInfoTab = () => {
   const {
@@ -13,24 +14,25 @@ const UserInfoTab = () => {
     <StyledUserInfoWrapper>
       <Typography variant="h2">Общая информация</Typography>
       <StyledInputWrapper>
-        <TextField
-          label="Фамилия"
-          {...register('lastName')}
-          error={!!errors.lastName}
-          helperText={errors.lastName?.message}
+        <TextInput
+           label="Фамилия"
+           name='lastName'
+           error={!!errors.lastName}
+           helperText={errors.lastName?.message}
         />
-        <TextField
+        <TextInput
           label="Имя"
-          {...register('firstName')}
+          name='firstName'
           error={!!errors.firstName}
           helperText={errors.firstName?.message}
         />
-        <TextField
+        <TextInput
           label="Отчество"
-          {...register('patronymic')}
+          name='patronymic'
           error={!!errors.patronymic}
           helperText={errors.patronymic?.message}
         />
+
         <TextField
           label="Телефон"
           {...register('phone')}
