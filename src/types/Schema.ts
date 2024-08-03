@@ -17,6 +17,9 @@ export const schema = z.object({
   projects: z.array(
     z.object({
       projectName: z.string().min(1, { message: 'Название проекта обязательно' }),
+      skills: z
+        .array(z.string().min(1, { message: 'Навык обязателен' }))
+        .min(1, { message: 'Добавьте хотя бы один навык' }),
     }),
   ),
 });
@@ -33,6 +36,7 @@ export const defaultValues: Schema = {
   projects: [
     {
       projectName: '',
+      skills: [],
     },
   ],
 };

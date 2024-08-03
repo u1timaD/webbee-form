@@ -12,7 +12,7 @@ import UserProjectsTab from '../UserProjectsTab/UserProjectsTab';
 const MainForm = () => {
   const methods = useForm({
     resolver: zodResolver(schema),
-    mode: 'onChange',
+    mode: 'onSubmit',
     defaultValues,
   });
 
@@ -29,7 +29,6 @@ const MainForm = () => {
 
   const onSubmit = () => {
     setReadOnlyForm(true);
-
   };
 
   return (
@@ -55,13 +54,9 @@ const MainForm = () => {
           Сохранить
         </StyledSaveButton>
 
-        {readOnlyForm && (
-          <StyledEditButton type="button" onClick={handleChangeReadOnly}>
-            Редактировать
-          </StyledEditButton>
-        )}
+        {readOnlyForm && <StyledEditButton onClick={handleChangeReadOnly}>Редактировать</StyledEditButton>}
       </form>
-      <DevTool control={methods.control} />
+      {/* <DevTool control={methods.control} /> */}
     </FormProvider>
   );
 };

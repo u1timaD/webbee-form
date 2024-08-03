@@ -1,4 +1,4 @@
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { Box, Button, Typography } from '@mui/material';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
@@ -11,10 +11,15 @@ import {
   StyledProjectBlock,
   StyledUserProjectContainer,
 } from './UserProjectsTab.styled';
+import AutocompleteInput from '../../ui/AutocomplateInput/AutocomplateInput';
+import { dataSkills } from '../../utils/data';
+import { useState } from 'react';
+import ProjectBlock from '../ProjectBlock/ProjectBlock';
 
 const UserProjectsTab = ({ readOnlyForm }) => {
   const {
     control,
+    trigger,
     formState: { errors },
   } = useFormContext<Schema>();
 
@@ -23,9 +28,22 @@ const UserProjectsTab = ({ readOnlyForm }) => {
     control,
   });
 
+  const [readOnlyProject, setReadOnlyProject] = useState(null);
+
+  const handleClickTriggerForm = async (index) => {
+    const result = await trigger(`projects.${index}`);
+
+    if (result) {
+      setReadOnlyProject(index);
+    } else {
+      setReadOnlyProject(null);
+    }
+  };
+
   const handleClickAddProjectForm = () => {
     append({
       projectName: '',
+      skills: [],
     });
   };
 
@@ -41,20 +59,35 @@ const UserProjectsTab = ({ readOnlyForm }) => {
                 label="Название"
                 error={!!errors.projects?.[index]?.projectName}
                 helperText={errors.projects?.[index]?.projectName?.message}
-                disabled={readOnlyForm}
+                disabled={readOnlyForm || readOnlyProject === index}
+              />
+              <AutocompleteInput<Schema>
+                name={`projects.${index}.skills`}
+                options={dataSkills}
+                disabled={readOnlyForm || readOnlyProject === index}
               />
             </StyledInputWrapper>
 
-            <Box>
-              {!readOnlyForm && (
-                <Button variant="contained" color="secondary" onClick={() => remove(index)}>
-                  Удалить
+            {readOnlyProject === index ? (
+              <Box>
+                <Button variant="contained" color="primary" onClick={() => setReadOnlyProject(null)}>
+                  Редактировать
                 </Button>
-              )}
-              <Button variant="contained" color="primary">
-                Добавить
-              </Button>
-            </Box>
+              </Box>
+            ) : (
+              <Box>
+                {!readOnlyForm && (
+                  <>
+                    <Button variant="contained" color="secondary" onClick={() => remove(index)}>
+                      Удалить
+                    </Button>
+                    <Button variant="contained" color="primary" onClick={() => handleClickTriggerForm(index)}>
+                      Добавить
+                    </Button>
+                  </>
+                )}
+              </Box>
+            )}
           </StyledProjectBlock>
         ))}
       </StyledFormWrapper>
