@@ -11,9 +11,9 @@ export const schema = z.object({
     .refine((text) => patterns.phone.test(text), { message: 'Введите корректные данные' }),
   email: z
     .string()
-    .min(1, { message: 'Это поле обязательное' })
-    .refine((text) => patterns.email.test(text), { message: 'Введите корректные данные' })
-    .optional(),
+    .optional()
+    .refine((text) => !text || patterns.email.test(text), { message: 'Email неправильный' }),
+  agree: z.boolean().refine((value) => value === true, { message: 'Подтвердите согласие' }),
 });
 
 export type Schema = z.infer<typeof schema>;
@@ -24,4 +24,5 @@ export const defaultValues: Schema = {
   patronymic: '',
   phone: '',
   email: '',
+  agree: false,
 };
