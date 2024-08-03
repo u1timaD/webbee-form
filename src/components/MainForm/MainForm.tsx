@@ -15,13 +15,18 @@ const MainForm = () => {
   });
 
   const [value, setValue] = useState('1');
+  const [readOnlyForm, setReadOnlyForm] = useState(false);
 
   const handleChangeTabs = (_event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 
-  const onSubmit = (data) => {
+  const handleChangeReadOnly = () => {
+    setReadOnlyForm(false);
+  };
 
+  const onSubmit = (data) => {
+    setReadOnlyForm(true);
 
   };
 
@@ -37,7 +42,7 @@ const MainForm = () => {
               </TabList>
             </StyledTabListWrapper>
             <TabPanel value="1">
-              <UserInfoTab />
+              <UserInfoTab readOnlyForm={readOnlyForm} />
             </TabPanel>
             <TabPanel value="2">Item Two</TabPanel>
           </TabContext>
@@ -46,7 +51,11 @@ const MainForm = () => {
           Сохранить
         </StyledSaveButton>
 
-        <StyledEditButton type="button">Редактировать</StyledEditButton>
+        {readOnlyForm && (
+          <StyledEditButton type="button" onClick={handleChangeReadOnly}>
+            Редактировать
+          </StyledEditButton>
+        )}
       </form>
     </FormProvider>
   );

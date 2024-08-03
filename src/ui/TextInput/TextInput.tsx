@@ -2,7 +2,7 @@ import { TextField } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 import { Schema } from '../../types/Schema';
 
-const TextInput = ({ name, label, error, helperText }) => {
+const TextInput = ({ name, label, error, helperText, disabled = false }) => {
   const {
     register,
   } = useFormContext<Schema>();
@@ -12,6 +12,7 @@ const TextInput = ({ name, label, error, helperText }) => {
       {...register(name)}
       error={error}
       helperText={helperText}
+      disabled={disabled}
     />
   );
 };
