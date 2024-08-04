@@ -5,7 +5,7 @@ import { schema, defaultValues } from '../../types/Schema';
 import { Tab } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { useState } from 'react';
-import { StyledEditButton, StyledSaveButton, StyledTabListWrapper, StyledTabsWrapper } from './MainForm.styled';
+import { StyledEditButton, StyledSaveButton, StyledTabListWrapper, StyledTabsWrapper } from './MainFormStyled';
 import UserInfoTab from '../UserInfoTab/UserInfoTab';
 import UserProjectsTab from '../UserProjectsTab/UserProjectsTab';
 import { useFormStore } from '../../store/store';
@@ -18,19 +18,12 @@ const MainForm = () => {
   });
 
   const [value, setValue] = useState('2');
-  // const [readOnlyForm, setReadOnlyForm] = useState(false);
 
   const { readOnlyForm, activateReadOnlyForm, deactivateReadOnlyForm } = useFormStore();
-
-
 
   const handleChangeTabs = (_event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-
-  // const handleChangeReadOnly = () => {
-  //   (false);
-  // };
 
   const onSubmit = () => {
     activateReadOnlyForm();

@@ -1,4 +1,4 @@
-import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Box, Button, Typography } from '@mui/material';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
@@ -10,10 +10,11 @@ import {
   StyledInputWrapper,
   StyledProjectBlock,
   StyledUserProjectContainer,
-} from './UserProjectsTab.styled';
+} from './userProjectsTabStyled';
 import AutocompleteInput from '../../ui/AutocomplateInput/AutocomplateInput';
-import { dataSkills } from '../../utils/data';
+import { dataRoles, dataSkills } from '../../utils/data';
 import { useFormStore, useProjectStore } from '../../store/store';
+import SelectInput from '../../ui/SelectInput/SelectInput';
 
 const UserProjectsTab = () => {
   const { readOnlyForm } = useFormStore();
@@ -28,7 +29,6 @@ const UserProjectsTab = () => {
     name: 'projects',
     control,
   });
-
 
   const { projectFormList, addValidProjectForm, removeValidProjectForm } = useProjectStore();
 
@@ -46,56 +46,68 @@ const UserProjectsTab = () => {
     append({
       projectName: '',
       skills: [],
+      roles: '',
     });
   };
 
-  const handleFindIndex = (index: number):boolean => {
+  const handleFindIndex = (index: number): boolean => {
     return projectFormList.includes(index);
   };
 
   return (
     <StyledUserProjectContainer>
       <StyledFormWrapper>
-        {fields.map((field, index) => (
-          <StyledProjectBlock key={field.id}>
-            <Typography variant="h6">Проект №{index + 1}</Typography>
-            <StyledInputWrapper>
-              <TextInput
-                name={`projects.${index}.projectName`}
-                label="Название"
-                error={!!errors.projects?.[index]?.projectName}
-                helperText={errors.projects?.[index]?.projectName?.message}
-                disabled={handleFindIndex(index) || readOnlyForm}
-              />
-              <AutocompleteInput<Schema>
-                name={`projects.${index}.skills`}
-                options={dataSkills}
-                disabled={handleFindIndex(index) || readOnlyForm}
-              />
-            </StyledInputWrapper>
+        {fields.length === 0 ? (
+          <>
+            <Typography variant="h5">Нет проектов</Typography>
+          </>
+        ) : (
+          fields.map((field, index) => (
+            <StyledProjectBlock key={field.id}>
+              <Typography variant="h6">Проект №{index + 1}</Typography>
+              <StyledInputWrapper>
+                <TextInput
+                  name={`projects.${index}.projectName`}
+                  label="Название"
+                  error={!!errors.projects?.[index]?.projectName}
+                  helperText={errors.projects?.[index]?.projectName?.message}
+                  disabled={handleFindIndex(index) || readOnlyForm}
+                />
+                <AutocompleteInput<Schema>
+                  name={`projects.${index}.skills`}
+                  options={dataSkills}
+                  disabled={handleFindIndex(index) || readOnlyForm}
+                />
+                <SelectInput<Schema>
+                  name={`projects.${index}.roles`}
+                  options={dataRoles}
+                  disabled={handleFindIndex(index) || readOnlyForm}
+                />
+              </StyledInputWrapper>
 
-            {handleFindIndex(index) ? (
-              <Box>
-                <Button variant="contained" color="primary" onClick={() => removeValidProjectForm(index)}>
-                  Редактировать
-                </Button>
-              </Box>
-            ) : (
-              <Box>
-                {!readOnlyForm && (
-                  <>
-                    <Button variant="contained" color="secondary" onClick={() => remove(index)}>
-                      Удалить
-                    </Button>
-                    <Button variant="contained" color="primary" onClick={() => handleClickTriggerForm(index)}>
-                      Добавить
-                    </Button>
-                  </>
-                )}
-              </Box>
-            )}
-          </StyledProjectBlock>
-        ))}
+              {handleFindIndex(index) ? (
+                <Box>
+                  <Button variant="contained" color="primary" onClick={() => removeValidProjectForm(index)}>
+                    Редактировать
+                  </Button>
+                </Box>
+              ) : (
+                <Box>
+                  {!readOnlyForm && (
+                    <>
+                      <Button variant="contained" color="secondary" onClick={() => remove(index)}>
+                        Удалить
+                      </Button>
+                      <Button variant="contained" color="primary" onClick={() => handleClickTriggerForm(index)}>
+                        Добавить
+                      </Button>
+                    </>
+                  )}
+                </Box>
+              )}
+            </StyledProjectBlock>
+          ))
+        )}
       </StyledFormWrapper>
 
       <Box>

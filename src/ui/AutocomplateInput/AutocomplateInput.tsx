@@ -1,14 +1,14 @@
 import { Autocomplete, TextField } from '@mui/material';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, FieldValues, Path, useFormContext } from 'react-hook-form';
 import { DataSkillsProps } from '../../utils/data';
 
-interface AutocompleteInputProps {
-  name: string;
+type AutocompleteInputProps<T extends FieldValues> = {
+  name: Path<T>;
   options: DataSkillsProps[];
-  disabled: boolean;
-}
+  disabled?: boolean;
+};
 
-const AutocompleteInput = ({ name, options, disabled }: AutocompleteInputProps) => {
+const AutocompleteInput = <T extends FieldValues>({ name, options, disabled }: AutocompleteInputProps<T>) => {
   const { control } = useFormContext();
 
   return (

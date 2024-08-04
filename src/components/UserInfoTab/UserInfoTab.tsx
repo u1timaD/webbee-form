@@ -4,7 +4,7 @@ import {
   StyledUserInfoBlock,
   StyledUserInfoTitle,
   StyledUserInfoWrapper,
-} from './UserInfoTab.styled';
+} from './UserInfoTabStyled';
 import { useFormContext } from 'react-hook-form';
 import { Schema } from '../../types/Schema';
 import TextInput from '../../ui/TextInput/TextInput';
