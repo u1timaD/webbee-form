@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { patterns } from '../utils/mask';
+import { isSameDay, startOfDay } from 'date-fns';
 
 export const schema = z.object({
   lastName: z.string().min(1, { message: 'Это поле обязательное' }),
@@ -15,12 +16,24 @@ export const schema = z.object({
     .refine((text) => !text || patterns.email.test(text), { message: 'Email неправильный' }),
   agree: z.boolean().refine((value) => value === true, { message: 'Подтвердите согласие' }),
   projects: z.array(
-    z.object({
-      projectName: z.string().min(1, { message: 'Название проекта обязательно' }),
-      skills: z
-        .array(z.string().min(1, { message: 'Навык обязателен' }))
-        .min(1, { message: 'Добавьте хотя бы один навык' }),
-    }),
+    z
+      .object({
+        projectName: z.string().min(1, { message: 'Название проекта обязательно' }),
+        skills: z
+          .array(z.string().min(1, { message: 'Навык обязателен' }))
+          .min(1, { message: 'Добавьте хотя бы один навык' }),
+        role: z.string().min(1, { message: 'Укажите свою роль на проекте' }),
+        dateStartWork: z.date(),
+        dateEndWork: z.date().optional(),
+      })
+      .superRefine((data, ctx) => {
+        if (data.dateStartWork && data.dateEndWork && data.dateStartWork > data.dateEndWork) {
+          ctx.addIssue({
+            path: ['dateStartWork'],
+            message: 'Дата начала не может быть позже даты окончания',
+          });
+        }
+      }),
   ),
 });
 
@@ -37,6 +50,9 @@ export const defaultValues: Schema = {
     {
       projectName: '',
       skills: [],
+      role: '',
+      dateStartWork: new Date(),
+      dateEndWork: undefined,
     },
   ],
 };

@@ -3,6 +3,8 @@ export interface DataSkillsProps {
   label: string;
 }
 
+export type DataRolesProps = string[];
+
 export const dataSkills: DataSkillsProps[] = [
   { id: '1', label: 'React' },
   { id: '2', label: 'HTML' },
@@ -16,4 +18,13 @@ export const dataSkills: DataSkillsProps[] = [
   { id: '10', label: 'Redux' },
   { id: '11', label: 'Next.js' },
   { id: '12', label: 'Vue.js' },
+];
+
+export const dataRoles: DataRolesProps = [
+  'Разработчик',
+  'Тестировщик',
+  'Аналитик',
+  'Менеджер проектов',
+  'UX/UI дизайнер',
+  'Системный администратор',
 ];

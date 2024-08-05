@@ -15,6 +15,7 @@ import AutocompleteInput from '../../ui/AutocomplateInput/AutocomplateInput';
 import { dataRoles, dataSkills } from '../../utils/data';
 import { useFormStore, useProjectStore } from '../../store/store';
 import SelectInput from '../../ui/SelectInput/SelectInput';
+import DatePickerInput from '../../ui/DatePickerInput/DatePickerInput';
 
 const UserProjectsTab = () => {
   const { readOnlyForm } = useFormStore();
@@ -46,7 +47,9 @@ const UserProjectsTab = () => {
     append({
       projectName: '',
       skills: [],
-      roles: '',
+      role: '',
+      dateStartWork: new Date(),
+      dateEndWork: undefined,
     });
   };
 
@@ -68,7 +71,7 @@ const UserProjectsTab = () => {
               <StyledInputWrapper>
                 <TextInput
                   name={`projects.${index}.projectName`}
-                  label="Название"
+                  label="Название проекта"
                   error={!!errors.projects?.[index]?.projectName}
                   helperText={errors.projects?.[index]?.projectName?.message}
                   disabled={handleFindIndex(index) || readOnlyForm}
@@ -79,8 +82,23 @@ const UserProjectsTab = () => {
                   disabled={handleFindIndex(index) || readOnlyForm}
                 />
                 <SelectInput<Schema>
-                  name={`projects.${index}.roles`}
+                  name={`projects.${index}.role`}
                   options={dataRoles}
+                  disabled={handleFindIndex(index) || readOnlyForm}
+                />
+
+                {/* <DatePickerInput
+                  name={`projects.${index}.datesWork`}
+                  disabled={handleFindIndex(index) || readOnlyForm}
+                /> */}
+                <DatePickerInput<Schema>
+                  name={`projects.${index}.dateStartWork`}
+                  label="Начало работы"
+                  disabled={handleFindIndex(index) || readOnlyForm}
+                />
+                <DatePickerInput<Schema>
+                  name={`projects.${index}.dateEndWork`}
+                  label="Окончание работы"
                   disabled={handleFindIndex(index) || readOnlyForm}
                 />
               </StyledInputWrapper>

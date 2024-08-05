@@ -13,17 +13,17 @@ const AutocompleteInput = <T extends FieldValues>({ name, options, disabled }: A
 
   return (
     <Controller
-      control={control}
       name={name}
+      control={control}
       render={({ field: { value, onChange, ref }, fieldState: { error } }) => (
         <Autocomplete
-          options={options || []}
+          options={options}
           value={value?.map((id: string) => options?.find((item) => item.id === id))}
-          getOptionLabel={(option) => options?.find((item) => item.id === option.id)?.label ?? ''}
-          isOptionEqualToValue={(option, newValue) => option.id === newValue.id}
           onChange={(_, newValue) => {
             onChange(newValue.map((item) => item.id));
           }}
+          getOptionLabel={(option) => options?.find((item) => item.id === option.id)?.label ?? ''}
+          isOptionEqualToValue={(option, newValue) => option.id === newValue.id}
           disableCloseOnSelect
           multiple
           limitTags={2}
@@ -35,7 +35,7 @@ const AutocompleteInput = <T extends FieldValues>({ name, options, disabled }: A
               inputRef={ref}
               error={!!error}
               helperText={error?.message}
-              label={'Навыки'}
+              label="Навыки"
             />
           )}
         />
