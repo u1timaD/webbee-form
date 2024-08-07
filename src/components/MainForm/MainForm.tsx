@@ -17,7 +17,9 @@ const MainForm = () => {
     defaultValues,
   });
 
-  const [value, setValue] = useState('2');
+  const [value, setValue] = useState('1');
+  const [alertTabInfo, setAlertTabInfo] = useState(false);
+  const [alertTabProjects, setAlertTabProjects] = useState(false);
 
   const { readOnlyForm, activateReadOnlyForm, deactivateReadOnlyForm } = useFormStore();
 
@@ -25,8 +27,29 @@ const MainForm = () => {
     setValue(newValue);
   };
 
-  const onSubmit = () => {
+  const onSubmit = (data) => {
     activateReadOnlyForm();
+  };
+
+  const handleClickSave = async () => {
+    const isValid = await methods.trigger();
+    const { errors } = methods.formState;
+
+    if (Object.keys(errors).filter((item) => item !== 'projects').length > 0) {
+      setAlertTabInfo(true);
+    } else {
+      setAlertTabInfo(false);
+    }
+
+    if (errors.projects?.length > 0) {
+      setAlertTabProjects(true);
+    } else {
+      setAlertTabProjects(false);
+    }
+
+    if (isValid) {
+      methods.handleSubmit(onSubmit)();
+    }
   };
 
   return (
@@ -36,8 +59,12 @@ const MainForm = () => {
           <TabContext value={value}>
             <StyledTabListWrapper>
               <TabList onChange={handleChangeTabs}>
-                <Tab label="Контактная информация" value="1" />
-                <Tab label="Проекты" value="2" />
+                <Tab
+                  label="Контактная информация"
+                  value="1"
+                  sx={{ border: alertTabInfo ? '1px solid #D32F2F' : 'none' }}
+                />
+                <Tab label="Проекты" value="2" sx={{ border: alertTabProjects ? '1px solid #D32F2F' : 'none' }} />
               </TabList>
             </StyledTabListWrapper>
             <TabPanel value="1">
@@ -48,7 +75,7 @@ const MainForm = () => {
             </TabPanel>
           </TabContext>
         </StyledTabsWrapper>
-        <StyledSaveButton type="submit" variant="contained" disabled={readOnlyForm}>
+        <StyledSaveButton type="submit" variant="contained" disabled={readOnlyForm} onClick={handleClickSave}>
           Сохранить
         </StyledSaveButton>
 
