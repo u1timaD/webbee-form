@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z, ZodIssueCode } from 'zod';
 import { patterns } from '../utils/mask';
 import { startOfDay } from 'date-fns';
 
@@ -31,6 +31,7 @@ export const schema = z.object({
 
         if (data.dateStartWork < today) {
           ctx.addIssue({
+            code: ZodIssueCode.custom,
             path: ['dateStartWork'],
             message: 'Дата начала не может быть раньше сегодняшней',
           });
@@ -38,6 +39,7 @@ export const schema = z.object({
 
         if (data.dateStartWork && data.dateEndWork && data.dateStartWork > data.dateEndWork) {
           ctx.addIssue({
+            code: ZodIssueCode.custom,
             path: ['dateEndWork'],
             message: 'Дата начала не может быть позже даты окончания',
           });

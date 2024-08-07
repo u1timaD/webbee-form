@@ -1,19 +1,14 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, Theme as MuiTheme } from '@mui/material/styles';
+import '@emotion/react';
 
-const Theme = createTheme({
-  palette: {
-    primary: {
-      light: '#757ce8',
-      main: '#3f50b5',
-      dark: '#002884',
-      contrastText: '#fff',
-    },
-    secondary: {
-      light: '#ff7961',
-      main: '#f44336',
-      dark: '#ba000d',
-      contrastText: '#000',
-    },
-  },
+declare module '@emotion/react' {
+  interface Theme extends MuiTheme {
+    spacing: (firstFactor: number, secondFactor?: number) => string;
+  }
+}
+
+const theme = createTheme({
+  spacing: (factor: number) => `${factor * 8}px`,
 });
-export default Theme;
+
+export default theme;

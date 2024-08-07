@@ -1,10 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { schema, defaultValues } from '../../types/Schema';
-import { Tab } from '@mui/material';
+import { Button, Tab } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { useState } from 'react';
-import { StyledEditButton, StyledSaveButton, StyledTabListWrapper, StyledTabsWrapper } from './MainFormStyled';
+import { StyledButtonWrapper, StyledTabListWrapper, StyledTabsWrapper } from './MainFormStyled';
 import UserInfoTab from '../UserInfoTab/UserInfoTab';
 import UserProjectsTab from '../UserProjectsTab/UserProjectsTab';
 import { useFormStore } from '../../store/store';
@@ -16,7 +16,7 @@ const MainForm = () => {
     defaultValues,
   });
 
-  const [value, setValue] = useState('2');
+  const [value, setValue] = useState('1');
   const [alertTabInfo, setAlertTabInfo] = useState(false);
   const [alertTabProjects, setAlertTabProjects] = useState(false);
 
@@ -66,11 +66,14 @@ const MainForm = () => {
             </TabPanel>
           </TabContext>
         </StyledTabsWrapper>
-        <StyledSaveButton type="submit" variant="contained" disabled={readOnlyForm} onClick={handleClickSave}>
-          Сохранить
-        </StyledSaveButton>
 
-        {readOnlyForm && <StyledEditButton onClick={deactivateReadOnlyForm}>Редактировать</StyledEditButton>}
+        <StyledButtonWrapper>
+          <Button type="submit" variant="contained" disabled={readOnlyForm} onClick={handleClickSave}>
+            Сохранить
+          </Button>
+
+          {readOnlyForm && <Button onClick={deactivateReadOnlyForm}>Редактировать</Button>}
+        </StyledButtonWrapper>
       </form>
     </FormProvider>
   );

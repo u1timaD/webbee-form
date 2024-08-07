@@ -2,16 +2,16 @@ import { TextField } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 import { Schema } from '../../types/Schema';
 
-interface SpecializedInputProps extends Schema {
+interface SpecializedInputProps {
   name: string;
   label: string;
   error: boolean;
   type?: string;
   disabled: boolean;
-  helperText: string;
+  helperText?: string;
 }
 
-const SpecializedInput = ({ name, label, error, helperText, type, disabled = false }: SpecializedInputProps) => {
+const SpecializedInput = ({ name, label, error, helperText = '', type, disabled = false }: SpecializedInputProps) => {
   const { register } = useFormContext<Schema>();
   return (
     <TextField

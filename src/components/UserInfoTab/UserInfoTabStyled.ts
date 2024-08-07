@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 export const StyledUserInfoWrapper = styled(Box)`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: ${({ theme }) => theme.spacing(3)};
 `;
 
 export const StyledUserInfoBlock = styled(Box)`
@@ -19,5 +19,5 @@ export const StyledUserInfoTitle = styled(Typography)`
 export const StyledInputWrapper = styled(Box)`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: ${({ theme }) => theme.spacing(3)};
 `;

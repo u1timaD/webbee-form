@@ -9,7 +9,7 @@ import {
   StyledFormWrapper,
   StyledUserProjectContainer,
 } from './userProjectsTabStyled';
-import UserProjectForm from '../../UserProjectForm/UserProjectForm';
+import UserProjectForm from '../UserProjectForm/UserProjectForm';
 
 const UserProjectsTab = () => {
   const { control } = useFormContext<Schema>();
