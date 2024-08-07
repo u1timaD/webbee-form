@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { patterns } from '../utils/mask';
-import { isSameDay, startOfDay } from 'date-fns';
+import { startOfDay } from 'date-fns';
 
 export const schema = z.object({
   lastName: z.string().min(1, { message: 'Это поле обязательное' }),

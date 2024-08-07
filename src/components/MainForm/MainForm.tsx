@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { DevTool } from '@hookform/devtools';
 import { FormProvider, useForm } from 'react-hook-form';
 import { schema, defaultValues } from '../../types/Schema';
 import { Tab } from '@mui/material';
@@ -17,7 +16,7 @@ const MainForm = () => {
     defaultValues,
   });
 
-  const [value, setValue] = useState('1');
+  const [value, setValue] = useState('2');
   const [alertTabInfo, setAlertTabInfo] = useState(false);
   const [alertTabProjects, setAlertTabProjects] = useState(false);
 
@@ -27,7 +26,7 @@ const MainForm = () => {
     setValue(newValue);
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = () => {
     activateReadOnlyForm();
   };
 
@@ -35,17 +34,9 @@ const MainForm = () => {
     const isValid = await methods.trigger();
     const { errors } = methods.formState;
 
-    if (Object.keys(errors).filter((item) => item !== 'projects').length > 0) {
-      setAlertTabInfo(true);
-    } else {
-      setAlertTabInfo(false);
-    }
+    setAlertTabInfo(Object.keys(errors).filter((item) => item !== 'projects').length > 0);
 
-    if (errors.projects?.length > 0) {
-      setAlertTabProjects(true);
-    } else {
-      setAlertTabProjects(false);
-    }
+    setAlertTabProjects(!!errors.projects?.length);
 
     if (isValid) {
       methods.handleSubmit(onSubmit)();
@@ -81,7 +72,6 @@ const MainForm = () => {
 
         {readOnlyForm && <StyledEditButton onClick={deactivateReadOnlyForm}>Редактировать</StyledEditButton>}
       </form>
-      {/* <DevTool control={methods.control} /> */}
     </FormProvider>
   );
 };
