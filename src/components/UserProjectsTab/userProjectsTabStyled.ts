@@ -25,6 +25,9 @@ export const StyledInputWrapper = styled(Box)`
   gap: 20px;
 `;
 
+export const StyledButtonAddProjectWrapper = styled(Box)`
+  margin-left: 40px;
+`;
 export const StyledButtonAddProject = styled(Button)`
   width: 200px;
   height: 200px;

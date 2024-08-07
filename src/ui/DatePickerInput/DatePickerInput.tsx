@@ -28,6 +28,7 @@ const DatePickerInput = <T extends FieldValues>({ name, label, disabled }: Props
                 helperText: error?.message,
                 fullWidth: true,
                 disabled: disabled,
+                format: 'dd/MM/yyyy',
               },
             }}
             disabled={disabled}

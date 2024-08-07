@@ -31,9 +31,9 @@ const AutocompleteInput = <T extends FieldValues>({ name, options, disabled }: A
           renderInput={(params) => (
             <TextField
               {...params}
-              sx={{ width: '250px' }}
               inputRef={ref}
               error={!!error}
+              fullWidth
               helperText={error?.message}
               label="Навыки"
             />

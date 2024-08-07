@@ -27,9 +27,18 @@ export const schema = z.object({
         dateEndWork: z.date().optional(),
       })
       .superRefine((data, ctx) => {
-        if (data.dateStartWork && data.dateEndWork && data.dateStartWork > data.dateEndWork) {
+        const today = startOfDay(new Date());
+
+        if (data.dateStartWork < today) {
           ctx.addIssue({
             path: ['dateStartWork'],
+            message: 'Дата начала не может быть раньше сегодняшней',
+          });
+        }
+
+        if (data.dateStartWork && data.dateEndWork && data.dateStartWork > data.dateEndWork) {
+          ctx.addIssue({
+            path: ['dateEndWork'],
             message: 'Дата начала не может быть позже даты окончания',
           });
         }

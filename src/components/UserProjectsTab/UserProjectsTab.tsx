@@ -6,6 +6,7 @@ import { Schema } from '../../types/Schema';
 import TextInput from '../../ui/TextInput/TextInput';
 import {
   StyledButtonAddProject,
+  StyledButtonAddProjectWrapper,
   StyledFormWrapper,
   StyledInputWrapper,
   StyledProjectBlock,
@@ -16,6 +17,7 @@ import { dataRoles, dataSkills } from '../../utils/data';
 import { useFormStore, useProjectStore } from '../../store/store';
 import SelectInput from '../../ui/SelectInput/SelectInput';
 import DatePickerInput from '../../ui/DatePickerInput/DatePickerInput';
+import { format } from 'date-fns';
 
 const UserProjectsTab = () => {
   const { readOnlyForm } = useFormStore();
@@ -86,11 +88,6 @@ const UserProjectsTab = () => {
                   options={dataRoles}
                   disabled={handleFindIndex(index) || readOnlyForm}
                 />
-
-                {/* <DatePickerInput
-                  name={`projects.${index}.datesWork`}
-                  disabled={handleFindIndex(index) || readOnlyForm}
-                /> */}
                 <DatePickerInput<Schema>
                   name={`projects.${index}.dateStartWork`}
                   label="Начало работы"
@@ -103,7 +100,7 @@ const UserProjectsTab = () => {
                 />
               </StyledInputWrapper>
 
-              {handleFindIndex(index) ? (
+              {handleFindIndex(index) && !readOnlyForm ? (
                 <Box>
                   <Button variant="contained" color="primary" onClick={() => removeValidProjectForm(index)}>
                     Редактировать
@@ -128,11 +125,11 @@ const UserProjectsTab = () => {
         )}
       </StyledFormWrapper>
 
-      <Box>
+      <StyledButtonAddProjectWrapper>
         <StyledButtonAddProject variant="contained" color="primary" onClick={handleClickAddProjectForm}>
           <AddOutlinedIcon />
         </StyledButtonAddProject>
-      </Box>
+      </StyledButtonAddProjectWrapper>
     </StyledUserProjectContainer>
   );
 };
