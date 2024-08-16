@@ -11,6 +11,5 @@ export const StyledTabListWrapper = styled(Box)`
 
 export const StyledButtonWrapper = styled(Box)`
   display: flex;
-  margin-top: ${({ theme }) => theme.spacing(2)};
   gap: ${({ theme }) => theme.spacing(3)};
 `;

@@ -1,15 +1,10 @@
 import { Checkbox, FormControl, FormControlLabel, FormHelperText } from '@mui/material';
-import {
-  StyledInputWrapper,
-  StyledUserInfoBlock,
-  StyledUserInfoTitle,
-  StyledUserInfoWrapper,
-} from './UserInfoTabStyled';
 import { useFormContext } from 'react-hook-form';
 import { Schema } from '../../types/Schema';
 import TextInput from '../../ui/TextInput/TextInput';
-import SpecializedInput from '../../ui/SpecializedInput/SpecializedInput';
-import { useFormStore } from '../../store/store';
+import { ReadOnlyFormContext } from '../../provider/MainFormProvider';
+import { useContext } from 'react';
+import { StyledInputWrapper, StyledUserInfoBlock, StyledUserInfoTitle, StyledUserInfoWrapper } from './userInfoTabStyled';
 
 const UserInfoTab = () => {
   const {
@@ -17,7 +12,7 @@ const UserInfoTab = () => {
     formState: { errors },
   } = useFormContext<Schema>();
 
-  const { readOnlyForm } = useFormStore();
+  const readOnlyForm = useContext(ReadOnlyFormContext);
 
   return (
     <StyledUserInfoWrapper>
@@ -27,22 +22,19 @@ const UserInfoTab = () => {
           <TextInput
             label="Фамилия"
             name="lastName"
-            error={!!errors.lastName}
-            helperText={errors.lastName?.message}
+            error={errors.lastName}
             disabled={readOnlyForm}
           />
           <TextInput
             label="Имя"
             name="firstName"
-            error={!!errors.firstName}
-            helperText={errors.firstName?.message}
+            error={errors.firstName}
             disabled={readOnlyForm}
           />
           <TextInput
             label="Отчество"
             name="patronymic"
-            error={!!errors.patronymic}
-            helperText={errors.patronymic?.message}
+            error={errors.patronymic}
             disabled={readOnlyForm}
           />
         </StyledInputWrapper>
@@ -51,23 +43,18 @@ const UserInfoTab = () => {
       <StyledUserInfoBlock>
         <StyledUserInfoTitle variant="h6">Контактная информация</StyledUserInfoTitle>
         <StyledInputWrapper>
-          <SpecializedInput
+          <TextInput
             label="Телефон"
             name="phone"
-            error={!!errors.phone}
-            helperText={errors.phone?.message}
+            error={errors.phone}
             disabled={readOnlyForm}
-            type="number"
           />
-
-          <SpecializedInput
+          <TextInput
             label="Email"
             name="email"
-            error={!!errors.email}
-            helperText={errors.email?.message}
+            error={errors.email}
             disabled={readOnlyForm}
           />
-
           <FormControl error={!!errors.agree}>
             <FormControlLabel
               control={<Checkbox {...register('agree')} />}

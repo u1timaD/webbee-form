@@ -2,13 +2,13 @@ import { Controller, FieldValues, Path, useFormContext } from 'react-hook-form';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 
-type Props<T extends FieldValues> = {
+type DatePickerInputProps<T extends FieldValues> = {
   name: Path<T>;
   label: string;
   disabled?: boolean;
 };
 
-const DatePickerInput = <T extends FieldValues>({ name, label, disabled }: Props<T>) => {
+const DatePickerInput = <T extends FieldValues>({ name, label, disabled }: DatePickerInputProps<T>) => {
   const { control } = useFormContext<T>();
 
   return (

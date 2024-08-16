@@ -6,16 +6,17 @@ type AutocompleteInputProps<T extends FieldValues> = {
   name: Path<T>;
   options: DataSkillsProps[];
   disabled?: boolean;
+  label: string;
 };
 
-const AutocompleteInput = <T extends FieldValues>({ name, options, disabled }: AutocompleteInputProps<T>) => {
+const AutocompleteInput = <T extends FieldValues>({ name, options, disabled, label }: AutocompleteInputProps<T>) => {
   const { control } = useFormContext();
 
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field: { value, onChange, ref }, fieldState: { error } }) => (
+      render={({ field: { value, onChange, ref, onBlur }, fieldState: { error } }) => (
         <Autocomplete
           options={options}
           value={value?.map((id: string) => options?.find((item) => item.id === id))}
@@ -31,11 +32,11 @@ const AutocompleteInput = <T extends FieldValues>({ name, options, disabled }: A
           renderInput={(params) => (
             <TextField
               {...params}
+              label={label}
               inputRef={ref}
               error={!!error}
-              fullWidth
               helperText={error?.message}
-              label="Навыки"
+              onBlur={onBlur}
             />
           )}
         />

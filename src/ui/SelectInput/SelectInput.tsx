@@ -6,16 +6,17 @@ type SelectInputProps<T extends FieldValues> = {
   name: Path<T>;
   options: DataRolesProps;
   disabled?: boolean;
+  label: string;
 };
 
-const SelectInput = <T extends FieldValues>({ name, options, disabled }: SelectInputProps<T>) => {
+const SelectInput = <T extends FieldValues>({ name, options, disabled, label }: SelectInputProps<T>) => {
   const { control } = useFormContext();
 
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field: { onChange, value, ref }, fieldState: { error } }) => (
+      render={({ field: { onChange, value, ref, onBlur }, fieldState: { error } }) => (
         <Autocomplete
           options={options}
           value={value || null}
@@ -23,15 +24,14 @@ const SelectInput = <T extends FieldValues>({ name, options, disabled }: SelectI
             onChange(newValue || '');
           }}
           disabled={disabled}
-          sx={{ width: 300 }}
           renderInput={(params) => (
             <TextField
               {...params}
-              label="Роль на проекте"
+              label={label}
               inputRef={ref}
               error={!!error}
               helperText={error?.message}
-              disabled={disabled}
+              onBlur={onBlur}
             />
           )}
         />

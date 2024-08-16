@@ -7,7 +7,8 @@ export const StyledUserProjectContainer = styled(Box)`
 
 export const StyledFormWrapper = styled(Box)`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 500px);
+  grid-auto-rows: minmax(560px, auto);
   gap: ${({ theme }) => theme.spacing(5)};
 `;
 
@@ -16,7 +17,6 @@ export const StyledProjectBlock = styled(Box)`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
   padding: ${({ theme }) => theme.spacing(4)};
-  border: 1px solid green;
 `;
 
 export const StyledInputWrapper = styled(Box)`
@@ -25,10 +25,7 @@ export const StyledInputWrapper = styled(Box)`
   gap: ${({ theme }) => theme.spacing(2)};
 `;
 
-export const StyledButtonAddProjectWrapper = styled(Box)`
-  margin-left: ${({ theme }) => theme.spacing(5)};
-`;
 export const StyledButtonAddProject = styled(Button)`
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  height: 100%;
 `;

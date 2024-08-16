@@ -12,9 +12,7 @@ export const StyledUserInfoBlock = styled(Box)`
   flex-direction: column;
 `;
 
-export const StyledUserInfoTitle = styled(Typography)`
-  margin-bottom: ${({ theme }) => theme.spacing(3)};
-`;
+export const StyledUserInfoTitle = styled(Typography)``;
 
 export const StyledInputWrapper = styled(Box)`
   display: flex;

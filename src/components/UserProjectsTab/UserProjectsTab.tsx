@@ -1,14 +1,9 @@
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { Schema } from '../../types/Schema';
 
-import {
-  StyledButtonAddProject,
-  StyledButtonAddProjectWrapper,
-  StyledFormWrapper,
-  StyledUserProjectContainer,
-} from './userProjectsTabStyled';
+import { StyledButtonAddProject, StyledFormWrapper, StyledUserProjectContainer } from './userProjectsTabStyled';
 import UserProjectForm from '../UserProjectForm/UserProjectForm';
 
 const UserProjectsTab = () => {
@@ -36,13 +31,12 @@ const UserProjectsTab = () => {
         ) : (
           fields.map((field, index) => <UserProjectForm key={field.id} index={index} remove={remove} />)
         )}
+        <Box>
+          <StyledButtonAddProject variant="contained" color="primary" onClick={handleClickAddProjectForm}>
+            <AddOutlinedIcon />
+          </StyledButtonAddProject>
+        </Box>
       </StyledFormWrapper>
-
-      <StyledButtonAddProjectWrapper>
-        <StyledButtonAddProject variant="contained" color="primary" onClick={handleClickAddProjectForm}>
-          <AddOutlinedIcon />
-        </StyledButtonAddProject>
-      </StyledButtonAddProjectWrapper>
     </StyledUserProjectContainer>
   );
 };

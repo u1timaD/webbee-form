@@ -3,22 +3,29 @@ import { patterns } from '../utils/mask';
 import { startOfDay } from 'date-fns';
 
 export const schema = z.object({
-  lastName: z.string().min(1, { message: 'Это поле обязательное' }),
-  firstName: z.string().min(1, { message: 'Это поле обязательное' }),
-  patronymic: z.string().min(1, { message: 'Это поле обязательное' }),
+  lastName: z
+    .string()
+    .trim()
+    .refine((value) => value !== '', { message: 'Это поле обязательное' }),
+  firstName: z
+    .string()
+    .trim()
+    .refine((value) => value !== '', { message: 'Это поле обязательное' }),
+  patronymic: z.string().trim().optional(),
   phone: z
     .string()
+    .trim()
     .min(1, { message: 'Это поле обязательное' })
     .refine((text) => patterns.phone.test(text), { message: 'Это не похоже на номер телефона' }),
-  email: z
-    .string()
-    .optional()
-    .refine((text) => !text || patterns.email.test(text), { message: 'Email неправильный' }),
+  email: z.string().trim().email({ message: 'Email неправильный' }).optional().or(z.literal('')),
   agree: z.boolean().refine((value) => value === true, { message: 'Подтвердите согласие' }),
   projects: z.array(
     z
       .object({
-        projectName: z.string().min(1, { message: 'Название проекта обязательно' }),
+        projectName: z
+          .string()
+          .trim()
+          .refine((value) => value !== '', { message: 'Название проекта обязательно' }),
         skills: z
           .array(z.string().min(1, { message: 'Навык обязателен' }))
           .min(1, { message: 'Добавьте хотя бы один навык' }),

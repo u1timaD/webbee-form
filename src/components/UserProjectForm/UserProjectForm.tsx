@@ -1,14 +1,15 @@
 import { Box, Button, Typography } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 import { Schema } from '../../types/Schema';
-import { useFormStore, useProjectStore } from '../../store/store';
+import { useCallback, useContext } from 'react';
 import { StyledProjectBlock, StyledButtonWrapper, StyledInputWrapper } from './userProjectFormStyled';
 import TextInput from '../../ui/TextInput/TextInput';
-import AutocompleteInput from '../../ui/AutocomplateInput/AutocomplateInput';
 import { dataRoles, dataSkills } from '../../utils/data';
 import DatePickerInput from '../../ui/DatePickerInput/DatePickerInput';
 import SelectInput from '../../ui/SelectInput/SelectInput';
-import { useCallback } from 'react';
+import { ReadOnlyFormContext } from '../../provider/MainFormProvider';
+import AutocompleteInput from '../../ui/AutocompleteInput/AutocompleteInput';
+import { SetValidProjectsContext, ValidProjectsContext } from '../../provider/ProjectFormProvider';
 
 interface UserProjectFormProps {
   index: number;
@@ -16,31 +17,27 @@ interface UserProjectFormProps {
 }
 
 const UserProjectForm = ({ index, remove }: UserProjectFormProps) => {
+  const readOnlyForm = useContext(ReadOnlyFormContext);
+  const validProjects = useContext(ValidProjectsContext);
+  const setValidProjects = useContext(SetValidProjectsContext);
+
   const {
     trigger,
     formState: { errors },
   } = useFormContext<Schema>();
 
-  const { projectFormList, addValidProjectForm, removeValidProjectForm } = useProjectStore();
-  const { readOnlyForm } = useFormStore();
-
-  const handleFindIndex = useCallback(
-    (index: number): boolean => {
-      return projectFormList.includes(index);
-    },
-    [projectFormList],
-  );
+  const readOnlyProject = validProjects.includes(index);
 
   const handleClickTriggerForm = useCallback(
     async (index: number) => {
       const result = await trigger(`projects.${index}`);
       if (result) {
-        addValidProjectForm(index);
+        setValidProjects((prev) => [...prev, index]);
       } else {
-        removeValidProjectForm(index);
+        setValidProjects((prev) => prev.filter((i) => i !== index));
       }
     },
-    [trigger, addValidProjectForm, removeValidProjectForm],
+    [trigger, setValidProjects],
   );
 
   return (
@@ -50,35 +47,40 @@ const UserProjectForm = ({ index, remove }: UserProjectFormProps) => {
         <TextInput
           name={`projects.${index}.projectName`}
           label="Название проекта"
-          error={!!errors.projects?.[index]?.projectName}
-          helperText={errors.projects?.[index]?.projectName?.message}
-          disabled={handleFindIndex(index) || readOnlyForm}
+          error={errors.projects?.[index]?.projectName}
+          disabled={readOnlyProject || readOnlyForm}
         />
         <AutocompleteInput<Schema>
           name={`projects.${index}.skills`}
+          label="Навыки"
           options={dataSkills}
-          disabled={handleFindIndex(index) || readOnlyForm}
+          disabled={readOnlyProject || readOnlyForm}
         />
         <SelectInput<Schema>
           name={`projects.${index}.role`}
+          label="Роль на проекте"
           options={dataRoles}
-          disabled={handleFindIndex(index) || readOnlyForm}
+          disabled={readOnlyProject || readOnlyForm}
         />
         <DatePickerInput<Schema>
           name={`projects.${index}.dateStartWork`}
           label="Начало работы"
-          disabled={handleFindIndex(index) || readOnlyForm}
+          disabled={readOnlyProject || readOnlyForm}
         />
         <DatePickerInput<Schema>
           name={`projects.${index}.dateEndWork`}
           label="Окончание работы"
-          disabled={handleFindIndex(index) || readOnlyForm}
+          disabled={readOnlyProject || readOnlyForm}
         />
       </StyledInputWrapper>
       <Box>
-        {handleFindIndex(index) && !readOnlyForm ? (
+        {readOnlyProject && !readOnlyForm ? (
           <Box>
-            <Button variant="contained" color="primary" onClick={() => removeValidProjectForm(index)}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setValidProjects((prev) => prev.filter((i) => i !== index))}
+            >
               Редактировать
             </Button>
           </Box>
